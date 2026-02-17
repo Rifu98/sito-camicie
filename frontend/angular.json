@@ -1,0 +1,34 @@
+{
+  "$schema": "https://angular.io/schema/angular-cli.json",
+  "version": 1,
+  "projects": {
+    "sito-camicie-frontend": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/frontend",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.json",
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
+            "scripts": []
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "sito-camicie-frontend:build"
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "sito-camicie-frontend"
+}
