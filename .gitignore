@@ -1,0 +1,57 @@
+# General
+.DS_Store
+*.log
+*.tmp
+*.swp
+*~
+
+# Frontend (Angular)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.vscode/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Backend (Spring Boot)
+backend/target/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+backend/.gradle/
+backend/build/
+backend/out/
+backend/*.iml
+backend/.idea/
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/bin/
+
+# Database
+*.db
+*.sqlite
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Uploaded files (keep structure, ignore content)
+backend/src/main/resources/static/textures/uploads/*
+!backend/src/main/resources/static/textures/uploads/.gitkeep
+backend/src/main/resources/static/models/uploads/*
+!backend/src/main/resources/static/models/uploads/.gitkeep
+
+# Environment
+.env
+.env.local
+application-local.properties
