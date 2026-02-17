@@ -21,4 +21,14 @@ export class ApiService {
     const res = await fetch(`${this.base}/models`);
     return res.json();
   }
+
+  async uploadModel(file: File, name: string, componentType: string) {
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('name', name);
+    fd.append('componentType', componentType);
+    const res = await fetch(`${this.base}/models`, { method: 'POST', body: fd });
+    return res.json();
+  }
 }
+
