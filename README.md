@@ -1,85 +1,18 @@
-# Configuratore Camicie 3D
+# Sito Camicie — Configuratore 3D (skeleton)
 
-Sistema di personalizzazione camicie con rendering 3D real-time.
+Repository iniziale per il progetto "Configuratore Camicie 3D".
 
-## Tecnologie
+Stato attuale
+- Implementata la struttura di repository (cartelle `frontend/` e `backend/`)
+- Aggiunti skeleton iniziali per il backend (Spring Boot) e placeholder frontend
 
-### Frontend
-- Angular 18+
-- Three.js per rendering 3D
-- Angular Material
+Documentazione di progetto: vedere `PIANO_IMPLEMENTAZIONE.md`
 
-### Backend
-- Spring Boot 3.x
-- PostgreSQL
-- Spring Data JPA
+Primi comandi utili
+- Frontend: cd frontend && (se vuoi scaffolding completo) run `npx @angular/cli new . --routing --style=scss` oppure `npm install` se il progetto è già presente
+- Backend: cd backend && mvn spring-boot:run
 
-## Setup Rapido
-
-### Prerequisiti
-- Node.js 18+ e npm
-- Java 17+
-- PostgreSQL 14+
-- Angular CLI: `npm install -g @angular/cli`
-
-### Installazione
-
-1. **Backend**:
-```bash
-cd backend
-./mvnw spring-boot:run
-```
-
-2. **Frontend**:
-```bash
-cd frontend
-npm install
-npm start
-```
-
-3. **Database**:
-Crea database PostgreSQL:
-```sql
-CREATE DATABASE shirt_configurator;
-```
-
-## Struttura Progetto
-
-```
-├── frontend/          # Angular application
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── configurator/    # Vista utente 3D
-│   │   │   ├── admin/           # Pannello admin
-│   │   │   ├── shared/          # Services e models
-│   │   │   └── ...
-│   └── ...
-├── backend/           # Spring Boot application
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/
-│   │   │   │   └── com/shirtconfig/
-│   │   │   │       ├── entity/
-│   │   │   │       ├── repository/
-│   │   │   │       ├── service/
-│   │   │   │       └── controller/
-│   │   │   └── resources/
-│   │   │       ├── static/
-│   │   │       │   ├── models/     # File 3D GLB
-│   │   │       │   └── textures/   # Immagini texture
-│   │   │       └── application.properties
-│   └── ...
-└── PIANO_IMPLEMENTAZIONE.md
-```
-
-## Funzionalità
-
-- ✅ Configuratore 3D interattivo
-- ✅ 9 componenti personalizzabili (collo, polsini, maniche, corpo, tasche, bottoni, cuciture, spacchi, monogramma)
-- ✅ Upload e processing automatico texture
-- ✅ Admin panel per gestione modelli e texture
-- ✅ Rotazione e zoom modello 3D
-
-## Licenza
-
-Proprietario
+Prossimi passi raccomandati
+1. Scaffold completo del frontend Angular
+2. Scaffold/Build del backend Spring Boot
+3. Creazione delle prime entità JPA e API REST

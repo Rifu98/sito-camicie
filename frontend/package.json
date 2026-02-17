@@ -1,0 +1,13 @@
+{
+  "name": "sito-camicie-frontend",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
