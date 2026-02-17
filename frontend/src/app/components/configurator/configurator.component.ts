@@ -70,6 +70,20 @@ import { StateService } from '../../services/state.service';
       <hr />
 
       <div style="margin-top:12px">
+        <h4>Monogramma</h4>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input #mono placeholder="AB" maxlength="4" style="width:80px" />
+          <select #font>
+            <option value="serif">Serif</option>
+            <option value="sans-serif" selected>Sans</option>
+            <option value="cursive">Script</option>
+          </select>
+          <input #color type="color" value="#ffffff" />
+          <button (click)="applyMonogram(mono.value, font.value, color.value)">Applica</button>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
         <h4>Configurazione corrente</h4>
         <pre>{{(state.configuration$ | async) | json}}</pre>
         <div style="margin-top:8px"><button (click)="saveConfiguration()">Salva configurazione</button></div>
@@ -151,6 +165,26 @@ export class ConfiguratorComponent {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  applyMonogram(text: string, font: string, color: string) {
+    if (!text) return;
+    const size = 512;
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = 'transparent';
+    ctx.fillRect(0,0,size,size);
+    ctx.fillStyle = color || '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = `bold 220px ${font}`;
+    ctx.fillText(text, size/2, size/2);
+
+    const dataUrl = canvas.toDataURL('image/png');
+    const synthetic = { name: `monogram-${text}`, processedPath: dataUrl, thumbnailPath: dataUrl };
+    this.selectTexture(synthetic);
   }
 
   async login(username: string, password: string) {

@@ -96,7 +96,8 @@ export class Shirt3DViewerComponent implements OnInit, OnDestroy {
   }
 
   applyTexture(t: any) {
-    const url = `http://localhost:8080/api/textures/file/${t.processedPath || t.thumbnailPath || t.originalPath}`;
+    const src = t?.processedPath || t?.thumbnailPath || t?.originalPath;
+    const url = src && src.startsWith && src.startsWith('data:') ? src : `http://localhost:8080/api/textures/file/${src}`;
     this.texLoader.load(url, tex => {
       // try to apply to mesh named 'Body' or to whole model
       const applyTo = (obj: THREE.Object3D) => {

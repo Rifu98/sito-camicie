@@ -3,7 +3,9 @@
 ## Stato implementazione (sintesi)
 - FASE 1-9: completate (scaffold repository, API core, texture processing placeholder, frontend configuratore 3D base, admin upload) ✅
 - Autenticazione admin: aggiunta (JWT, demo in-memory user) ✅
-- Rimanente: polish UI, algoritmi avanzati seamless, asset 3D reali, test E2E approfonditi, ottimizzazioni di performance
+- Monogramma client-side (canvas → texture) implementato ✅
+- Docker Compose per sviluppo (Postgres + backend + frontend) aggiunto ✅
+- Rimanente: algoritmo seamless avanzato, raccolta/ottimizzazione asset 3D reali, test E2E (Cypress), UI polish avanzato, caching e ottimizzazioni Three.js
 
 ## Panoramica
 Sistema di personalizzazione camicie con rendering 3D, composto da:
