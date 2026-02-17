@@ -17,7 +17,7 @@ jobs:
           distribution: temurin
           java-version: '17'
       - name: Build backend
-        run: mvn -f backend -DskipTests package
+        run: mvn -f backend package --batch-mode
 
   frontend:
     runs-on: ubuntu-latest
