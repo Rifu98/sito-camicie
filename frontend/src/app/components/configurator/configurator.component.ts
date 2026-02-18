@@ -31,7 +31,11 @@ import { StateService } from '../../services/state.service';
             <img [src]="thumbUrl(t.thumbnailPath)" width="48" height="48" style="object-fit:cover;border-radius:4px"/>
             <div style="flex:1;display:flex;justify-content:space-between;align-items:center">
               <div>{{t.name}}</div>
-              <div><button (click)="selectTexture(t)">Usa</button></div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <button class="small" (click)="selectTexture(t)">Usa</button>
+                <button class="small ghost" (click)="enhanceTexture(t)" *ngIf="authenticated">Enhance</button>
+                <a *ngIf="t.enhancedPath" target="_blank" [href]="thumbUrl(t.enhancedPath)" style="font-size:12px;color:var(--muted);margin-left:6px">Enhanced</a>
+              </div>
             </div>
           </div>
         </div>
@@ -125,6 +129,12 @@ export class ConfiguratorComponent {
     const f = files[0];
     await this.api.uploadTexture(f);
     setTimeout(()=> this.load(), 800); // reload after processing
+  }
+
+  async enhanceTexture(t: any) {
+    if (!confirm('Enhance texture "' + t.name + '"?')) return;
+    await this.api.enhanceTexture(t.id);
+    setTimeout(()=> this.load(), 1000);
   }
 
   async onModelFile(files: FileList, type: string) {

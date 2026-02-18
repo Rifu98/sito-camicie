@@ -72,6 +72,15 @@ public class TextureProcessingService {
                     persisted.setProcessedPath(processedFile);
                     persisted.setThumbnailPath(thumbFile);
                     persisted.setIsTillable(true);
+                    // if AI enhancement enabled, create an enhanced version too
+                    if (useOpenCV) {
+                        try {
+                            OpenCVUtils.enhanceLocal(original.getFile().getAbsolutePath(), storage.getTexturePath("enhanced_" + original.getFileName().toString()).toFile().getAbsolutePath(), processedSize);
+                            persisted.setEnhancedPath("enhanced_" + original.getFileName().toString());
+                        } catch (Exception ex) {
+                            // ignore
+                        }
+                    }
                     textureRepository.save(persisted);
                 }
             } catch (Exception ex) {

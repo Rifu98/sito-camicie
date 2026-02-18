@@ -55,3 +55,9 @@ backend/src/main/resources/static/models/uploads/*
 .env
 .env.local
 application-local.properties
+
+# Devcontainer
+.devcontainer/
+.tools/
+**/.devcontainer
+

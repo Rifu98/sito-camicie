@@ -4,6 +4,7 @@ import it.sitocamicie.model.Texture;
 import it.sitocamicie.repository.TextureRepository;
 import it.sitocamicie.service.FileStorageService;
 import it.sitocamicie.service.TextureProcessingService;
+import it.sitocamicie.service.TextureEnhancementService;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -24,13 +25,16 @@ public class TextureController {
     private final TextureRepository textureRepository;
     private final TextureProcessingService textureProcessingService;
     private final FileStorageService fileStorageService;
+    private final TextureEnhancementService textureEnhancementService;
 
     public TextureController(TextureRepository textureRepository,
                              TextureProcessingService textureProcessingService,
-                             FileStorageService fileStorageService) {
+                             FileStorageService fileStorageService,
+                             TextureEnhancementService textureEnhancementService) {
         this.textureRepository = textureRepository;
         this.textureProcessingService = textureProcessingService;
         this.fileStorageService = fileStorageService;
+        this.textureEnhancementService = textureEnhancementService;
     }
 
     @GetMapping
@@ -54,6 +58,14 @@ public class TextureController {
         return textureRepository.findById(id).map(t -> {
             textureRepository.delete(t);
             return ResponseEntity.noContent().<Void>build();
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/{id}/enhance")
+    public ResponseEntity<Texture> enhance(@PathVariable Long id) {
+        return textureRepository.findById(id).map(t -> {
+            var res = textureEnhancementService.enhance(id);
+            return res.map(ResponseEntity::ok).orElse(ResponseEntity.status(500).build());
         }).orElse(ResponseEntity.notFound().build());
     }
 

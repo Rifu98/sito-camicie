@@ -39,4 +39,32 @@ public class OpenCVUtils {
         opencv_imgcodecs.imwrite(outputPath, canvas);
         img.release(); resized.release(); canvas.release();
     }
+
+    public static void enhanceLocal(String inputPath, String outputPath, int targetSize) {
+        Mat img = opencv_imgcodecs.imread(inputPath, opencv_imgcodecs.IMREAD_UNCHANGED);
+        if (img == null || img.empty()) return;
+        Mat resized = new Mat();
+        double sx = (double) targetSize / img.cols();
+        double sy = (double) targetSize / img.rows();
+        double scale = Math.max(sx, sy);
+        opencv_imgproc.resize(img, resized, new org.bytedeco.opencv.opencv_core.Size((int)(img.cols()*scale), (int)(img.rows()*scale)), 0, 0, opencv_imgproc.INTER_CUBIC);
+
+        Mat tmp = new Mat();
+        // bilateral filter to denoise while preserving edges
+        opencv_imgproc.bilateralFilter(resized, tmp, 9, 75, 75);
+        Mat unsharp = new Mat();
+        // unsharp mask: sharpen = 1.5*resized - 0.5*blur
+        Mat blur = new Mat();
+        opencv_imgproc.GaussianBlur(tmp, blur, new org.bytedeco.opencv.opencv_core.Size(5,5), 0);
+        opencv_core.addWeighted(tmp, 1.5, blur, -0.5, 0.0, unsharp);
+
+        // center-crop to targetSize
+        int cx = Math.max(0, (unsharp.cols() - targetSize)/2);
+        int cy = Math.max(0, (unsharp.rows() - targetSize)/2);
+        org.bytedeco.opencv.opencv_core.Rect rect = new org.bytedeco.opencv.opencv_core.Rect(cx, cy, Math.min(targetSize, unsharp.cols()), Math.min(targetSize, unsharp.rows()));
+        Mat out = new Mat(unsharp, rect);
+        opencv_imgcodecs.imwrite(outputPath, out);
+
+        img.release(); resized.release(); tmp.release(); blur.release(); unsharp.release(); out.release();
+    }
 }

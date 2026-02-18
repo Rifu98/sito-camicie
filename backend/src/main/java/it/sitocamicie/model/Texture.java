@@ -15,6 +15,7 @@ public class Texture {
     private String originalPath;
     private String processedPath;
     private String thumbnailPath;
+    private String enhancedPath; // AI-enhanced output (dataURL or file name)
     private Boolean isTillable = true;
     private Instant uploadDate = Instant.now();
 
@@ -29,6 +30,8 @@ public class Texture {
     public void setProcessedPath(String processedPath) { this.processedPath = processedPath; }
     public String getThumbnailPath() { return thumbnailPath; }
     public void setThumbnailPath(String thumbnailPath) { this.thumbnailPath = thumbnailPath; }
+    public String getEnhancedPath() { return enhancedPath; }
+    public void setEnhancedPath(String enhancedPath) { this.enhancedPath = enhancedPath; }
     public Boolean getIsTillable() { return isTillable; }
     public void setIsTillable(Boolean isTillable) { this.isTillable = isTillable; }
     public Instant getUploadDate() { return uploadDate; }

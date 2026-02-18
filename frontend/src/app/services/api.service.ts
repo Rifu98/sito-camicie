@@ -31,6 +31,11 @@ export class ApiService {
     return res.json();
   }
 
+  async enhanceTexture(id: number) {
+    const res = await fetch(`${this.base}/textures/${id}/enhance`, { method: 'POST', headers: this.getAuthHeaders() });
+    return res.json();
+  }
+
   async listModels() {
     const res = await fetch(`${this.base}/models`);
     return res.json();
