@@ -21,19 +21,20 @@ public class TextureProcessingService {
     private final TaskExecutor taskExecutor;
     private final int processedSize;
     private final int thumbnailSize;
-
+    private final boolean useOpenCV;
+    
     public TextureProcessingService(FileStorageService storage,
                                     TextureRepository textureRepository,
                                     TaskExecutor taskExecutor,
                                     @Value("${app.texture.process.size:1024}") int processedSize,
-                                    @Value("${app.texture.thumb.size:256}") int thumbnailSize) {
+                                    @Value("${app.texture.thumb.size:256}") int thumbnailSize,
+                                    @Value("${app.texture.use-opencv:false}") boolean useOpenCV) {
         this.storage = storage;
         this.textureRepository = textureRepository;
         this.taskExecutor = taskExecutor;
         this.processedSize = processedSize;
         this.thumbnailSize = thumbnailSize;
-    }
-
+        this.useOpenCV = useOpenCV;
     public Texture saveAndProcess(MultipartFile file, String name) throws IOException {
         Path original = storage.storeTexture(file, file.getOriginalFilename());
 
@@ -53,14 +54,17 @@ public class TextureProcessingService {
                 Path thumbPath = storage.getTexturePath(thumbFile);
 
                 // generate a tillable (seamless-like) texture and thumbnail
-                // processed: create a square image of size `processedSize` and apply offset-blend tiling
                 java.awt.image.BufferedImage srcImg = javax.imageio.ImageIO.read(src);
-                java.awt.image.BufferedImage processedImg = makeTiled(srcImg, processedSize);
-                javax.imageio.ImageIO.write(processedImg, "png", processedPath.toFile());
-
-                // thumbnail
-                java.awt.image.BufferedImage thumbImg = makeTiled(srcImg, thumbnailSize);
-                javax.imageio.ImageIO.write(thumbImg, "png", thumbPath.toFile());
+                if (useOpenCV) {
+                    // use OpenCV/JavaCV for improved seamless processing
+                    OpenCVUtils.generateTiled(src.getAbsolutePath(), processedPath.toFile().getAbsolutePath(), processedSize);
+                    OpenCVUtils.generateTiled(src.getAbsolutePath(), thumbPath.toFile().getAbsolutePath(), thumbnailSize);
+                } else {
+                    java.awt.image.BufferedImage processedImg = makeTiled(srcImg, processedSize);
+                    javax.imageio.ImageIO.write(processedImg, "png", processedPath.toFile());
+                    java.awt.image.BufferedImage thumbImg = makeTiled(srcImg, thumbnailSize);
+                    javax.imageio.ImageIO.write(thumbImg, "png", thumbPath.toFile());
+                }
 
                 Optional<Texture> opt = textureRepository.findById(t.getId());
                 if (opt.isPresent()) {

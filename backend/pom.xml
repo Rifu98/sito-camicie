@@ -70,6 +70,12 @@
       <version>0.11.5</version>
       <scope>runtime</scope>
     </dependency>
+    <!-- OpenCV / JavaCV native bindings for improved texture processing -->
+    <dependency>
+      <groupId>org.bytedeco</groupId>
+      <artifactId>opencv-platform</artifactId>
+      <version>4.7.0-1.5.8</version>
+    </dependency>
   </dependencies>
 
   <build>

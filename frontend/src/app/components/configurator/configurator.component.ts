@@ -59,7 +59,10 @@ import { StateService } from '../../services/state.service';
               <div style="width:48px;height:48px;background:#eee;border-radius:4px;display:flex;align-items:center;justify-content:center">GLB</div>
               <div style="flex:1">
                 <div>{{m.name}} <small style="color:#666">({{m.componentType}})</small></div>
-                <div style="margin-top:6px"><button (click)="selectModel(m)">Usa</button></div>
+                <div style="margin-top:6px">
+                  <button (click)="selectModel(m)">Usa</button>
+                  <a style="margin-left:8px;font-size:12px;color:var(--muted)" target="_blank" [href]="modelUrl(m.filePath)">Anteprima file</a>
+                </div>
               </div>
             </div>
           </div>
@@ -148,6 +151,10 @@ export class ConfiguratorComponent {
     const cfg = { ...(this.state.configuration$.value || {}) };
     cfg['model'] = m;
     this.state.configuration$.next(cfg);
+  }
+
+  modelUrl(name: string) {
+    return `http://localhost:8080/api/models/file/${name}`;
   }
 
   async saveConfiguration() {

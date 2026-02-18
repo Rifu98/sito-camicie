@@ -25,10 +25,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-        InMemoryUserDetailsManager m = new InMemoryUserDetailsManager();
-        m.createUser(User.withUsername("admin").password(encoder.encode("admin")).roles("ADMIN").build());
-        return m;
+    public org.springframework.security.core.userdetails.UserDetailsService userDetailsService(PasswordEncoder encoder, org.springframework.context.ApplicationContext ctx) {
+        // prefer JPA-backed userService when available
+        try {
+            return ctx.getBean(it.sitocamicie.service.JpaUserDetailsService.class);
+        } catch (Exception ex) {
+            // fallback to in-memory (keeps compatibility)
+            InMemoryUserDetailsManager m = new InMemoryUserDetailsManager();
+            m.createUser(User.withUsername("admin").password(encoder.encode("admin")).roles("ADMIN").build());
+            return m;
+        }
     }
 
     @Bean
