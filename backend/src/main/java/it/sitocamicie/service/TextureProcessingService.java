@@ -35,6 +35,8 @@ public class TextureProcessingService {
         this.processedSize = processedSize;
         this.thumbnailSize = thumbnailSize;
         this.useOpenCV = useOpenCV;
+    }
+
     public Texture saveAndProcess(MultipartFile file, String name) throws IOException {
         Path original = storage.storeTexture(file, file.getOriginalFilename());
 
