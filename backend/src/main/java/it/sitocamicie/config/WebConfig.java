@@ -19,6 +19,8 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Serve files from storage directory under /files/**
         String storagePath = Paths.get("storage").toUri().toString();
-        registry.addResourceHandler("/files/**").addResourceLocations(storagePath);
+        registry.addResourceHandler("/files/**")
+                .addResourceLocations(storagePath)
+                .setCachePeriod(3600 * 24 * 30); // 30 days
     }
 }

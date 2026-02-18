@@ -103,9 +103,18 @@ export class Shirt3DViewerComponent implements OnInit, OnDestroy {
       const applyTo = (obj: THREE.Object3D) => {
         obj.traverse((ch: any) => {
           if (ch.isMesh) {
-            if (!ch.material) ch.material = new THREE.MeshStandardMaterial();
-            ch.material.map = tex;
-            ch.material.needsUpdate = true;
+            // if mesh name hints a sub-component, allow selective mapping
+            const name = (ch.name || '').toLowerCase();
+            if (name.includes('collar') || name.includes('cuff') || name.includes('pocket') || name.includes('sleeve') || name.includes('body')) {
+              if (!ch.material) ch.material = new THREE.MeshStandardMaterial();
+              ch.material.map = tex;
+              ch.material.needsUpdate = true;
+            } else {
+              // fallback: apply to all meshes with UVs
+              if (!ch.material) ch.material = new THREE.MeshStandardMaterial();
+              ch.material.map = tex;
+              ch.material.needsUpdate = true;
+            }
           }
         });
       };

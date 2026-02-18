@@ -32,3 +32,45 @@ jobs:
         run: |
           npm ci
           npm run build --if-present
+
+  e2e:
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build & run backend
+        run: |
+          mvn -f backend -DskipTests package &
+          mvn -f backend spring-boot:run &
+          # wait for backend
+          for i in {1..30}; do
+            curl --silent --fail http://localhost:8080/api/models && break || sleep 1;
+          done
+        env:
+          SPRING_PROFILES_ACTIVE: test
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install frontend deps and serve build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+          npx http-server ./dist/frontend -p 4200 &
+          for i in {1..30}; do curl --silent --fail http://localhost:4200 && break || sleep 1; done
+
+      - name: Run Cypress tests
+        working-directory: frontend
+        run: |
+          npx cypress run --spec "cypress/e2e/**"
+

@@ -2,12 +2,7 @@
   "name": "sito-camicie-frontend",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "start": "ng serve --host 0.0.0.0",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint"
-  },
+
   "dependencies": {
     "@angular/animations": "^18.0.0",
     "@angular/common": "^18.0.0",
@@ -24,6 +19,15 @@
   "devDependencies": {
     "@angular/cli": "^18.0.0",
     "@angular/compiler-cli": "^18.0.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "cypress": "^12.16.0",
+    "http-server": "^14.1.1"
+  },
+  "scripts": {
+    "start": "ng serve --host 0.0.0.0",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "cypress run --config baseUrl=http://localhost:4200"
   }
 }
